@@ -1,0 +1,24 @@
+ fieldset{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 59px;
+ }
+
+ /* body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  
+} */
+
+form {
+    width: 10%;
+}
+
+input{
+    padding: 7px;
+    width: 300px;
+}
