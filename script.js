@@ -1,41 +1,104 @@
+// Objeto que armazena os dados do cliente
 const cliente = {
-  nome: document.querySelector("#nome").value,
+  nome: document.querySelector("#nome-cliente"),
   cpf: document.querySelector("#cpf"),
-  form: document.querySelector("#form-cliente"),
+  formulario: document.querySelector("#form-cliente"),
 };
 
+// Objeto que armazena os dados do endereço
 const endereco = {
-  logradouro: document.querySelector("#logradouro"),
   cep: document.querySelector("#cep"),
-  bairro: document.querySelector("#bairro"),
+  logradouro: document.querySelector("#logradouro"),
   numero: document.querySelector("#numero"),
-  idade: document.querySelector("#cidade"),
+  complemento: document.querySelector("#complemento"),
+  bairro: document.querySelector("#bairro"),
+  cidade: document.querySelector("#cidade"),
   uf: document.querySelector("#uf"),
-  cep: "06436330",
 };
-//manda ele ouvir quando clicar no botao
-cliente.form.addEventListener('submit',(evento)=>{
-    evento.preventDefault(); //impede reload da pagina
-console.log(cliente.cpf)
-consultaCep(cliente.nome)
 
-});
-async function consultaCep(cep) {
+// Função que faz a busca do CEP digitado
+async function consultarCEP(cep) {
   const url = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
   const resposta = await url.json();
+  // Variável do tipo objeto para receber os dados do CEP do usuário
+  const dadosDoCEP = {
+    logradouro: resposta.logradouro,
+    complemento: resposta.complemento,
+    bairro: resposta.bairro,
+    cidade: resposta.localidade,
+    uf: resposta.uf
+  };
+  // return dadosDoCEP;
+  inserirEndereco(dadosDoCEP);
+  inserirBairro(dadosDoCEP);
+  inserirCidade(dadosDoCEP);
+  inserirUf(dadosDoCEP);
+  inserirComplemento(dadosDoCEP);
+}
+
+// Adiciona um "ouvinte" para capturar o disparo do evento de submit do formulário
+cliente.formulario.addEventListener("submit", (evento) => {
+  evento.preventDefault(); // Previne o reload da página
+  consultarCEP(cep.value);
+});
+
+function inserirEndereco(dadosDoCEP) {
+  endereco.logradouro.value = dadosDoCEP.logradouro;
+}
+function inserirBairro(dadosDoCEP) {
+  endereco.bairro.value = dadosDoCEP.bairro;
+}
+function inserirCidade(dadosDoCEP) {
+  endereco.cidade.value = dadosDoCEP.cidade;
+}
+function inserirUf(dadosDoCEP) {
+  endereco.uf.value = dadosDoCEP.uf;
+}
+function inserirComplemento(dadosDoCEP) {
+  endereco.complemento.value = dadosDoCEP.complemento;
+}
+
+// --------------------------------------------------------------------------------------------------------
+
+
+const produto = {
+  quantidade: document.querySelector("#quantidade"),
+  nome: document.querySelector("#nome"),
+  valor: document.querySelector("#valor"),
+  form: document.querySelector("#form-produto"),
+  lista: []
 };
 
-//   const cepUsuario = {
-//     logradouro: resposta.logradouro,
-//     bairro: resposta.bairro,
-//     cidade: resposta.localidade,
-//     uf: resposta.uf,
-//   };
-//   console.log(cepUsuario);
-// }
+produto.form.addEventListener("submit", (evento) => {
+  evento.preventDefault(); // Previne o reload da página
+  // console.log(produto.quantidade.value);
+  //  console.log(produto.valor.value);
+  //   console.log(produto.nome.value);
 
-// function inserirDados(cepUsuario) {
-//   cliente.logradouro.innerText = cepUsuario.logradouro;
-//   cliente.bairro.innerText = cepUsuario.bairro;
-//   cliente.cidade.innerText = cepUsuario.cidade;
-// }
+  let item = {
+    quantidade: produto.quantidade.value,
+     nome: produto.nome.value,
+      valor: produto.valor.value,
+  }
+  listaProdutos(item);
+  calcularPreco();
+});
+
+function listaProdutos(item){
+produto.lista.push(item);
+console.log(produto.lista);
+}
+
+function calcularPreco(listaProdutos){
+(listaProdutos.quantidade * listaProdutos.valor)
+}
+
+
+
+
+
+
+
+
+
+// multiplicando quantidade pelo preço
